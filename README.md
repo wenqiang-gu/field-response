@@ -13,9 +13,11 @@ As the time binning is 100ns in the histogram, it's equivalent to 1 electron.
 
 * Garfield simulation condition for SBND (in progress):
 
-1st induction: -200V
+1st induction: -210V
 
 2nd induction: 0V
 
 collection:    430V 
+
+This setting is suggested by Michelle as it provides full transparency
 
