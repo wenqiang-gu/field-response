@@ -21,4 +21,3 @@ collection:    430V
 
 This setting is suggested by Michelle as it provides full transparency
 
-
