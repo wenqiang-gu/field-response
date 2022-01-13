@@ -12,9 +12,14 @@ import ROOT
 # time has unit of us
 # icarus assumes three planes in Y, U, V
 hfr = [
+#ICARUS
  ROOT.TH2F("FieldRes_Y","Y plane (1st ind.) unit: electrons/ns",210, -10.5-0.05, 10.5-0.05, 1000,-60,40 )
 ,ROOT.TH2F("FieldRes_U","U plane (2nd ind.) unit: electrons/ns",210, -10.5-0.05, 10.5-0.05, 1000,-60,40 )
 ,ROOT.TH2F("FieldRes_V","V plane (col.) unit: electrons/ns",210, -10.5-0.05, 10.5-0.05, 1000,-60,40 )
+#VD coldbox
+#  ROOT.TH2F("FieldRes_U","U plane (1st ind.) unit: electrons/ns",420, -20.5-0.05, 20.5-0.05, 1208,0,1208 )
+# ,ROOT.TH2F("FieldRes_Y","Y plane (2nd ind.) unit: electrons/ns",420, -20.5-0.05, 20.5-0.05, 1208,0,1208 )
+# ,ROOT.TH2F("FieldRes_Z","Z plane (col.) unit: electrons/ns",210, -10.5-0.05, 10.5-0.05, 1205,0,1205 )
 ]
 
 with bz2.BZ2File(filename) as bzinput:
@@ -24,12 +29,15 @@ with bz2.BZ2File(filename) as bzinput:
     hfr[iplane].GetYaxis().SetTitle("Time [#mus]")
     
     wire_pitch = obj["FieldResponse"]["planes"][iplane]["PlaneResponse"]["pitch"]
-
-    for ipitch in range(126):
+    npaths = len(obj["FieldResponse"]["planes"][iplane]["PlaneResponse"]["paths"])
+    print("plane: %d, npaths=%d"%(iplane,npaths))
+    for ipitch in range(npaths):
       fr_array = obj["FieldResponse"]["planes"][iplane]["PlaneResponse"]["paths"][ipitch]["PathResponse"]["current"]["array"]["elements"]
+      nelements = len(fr_array)
+      print("nelements=%d"%len(fr_array))
       path_position = obj["FieldResponse"]["planes"][iplane]["PlaneResponse"]["paths"][ipitch]["PathResponse"]["pitchpos"]
       ipos1 = hfr[iplane].GetXaxis().FindBin(path_position / wire_pitch)
-      for itick in range(1000):
+      for itick in range(nelements):
         hfr[iplane].SetBinContent(ipos1, itick+1, -fr_array[itick])
         ipos2 = hfr[iplane].GetXaxis().FindBin(-path_position / wire_pitch)
         if hfr[iplane].GetBinContent(ipos2, itick+1)>0:
