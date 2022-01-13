@@ -1,5 +1,8 @@
 # field-response
+
 Here are some field response files for LArTPC in json format, and a python script for converting json format to ROOT TH2 histogram
+
+* Usage example: python avg_fr_json2root.py garfield-icarus-fnal-rev1.json.bz2
 
 * garfield-icarus-fnal-commissioning.[json.bz2/root]
 
